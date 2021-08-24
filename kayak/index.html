@@ -1,0 +1,143 @@
+<body style="width: 30vw; height: 30vw; margin: 10vw auto;">
+  <video style="display: none" id="video" width="1920" height="1080" autoplay muted loop crossorigin="anonymous">
+    <source src="test.mp4" type="video/mp4">
+  </video>
+	<script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+
+    var camera, controls, scene, renderer;
+
+    const video = document.getElementById('video');
+    const texture = new THREE.VideoTexture(video);
+
+    const parameters = { color: 0xffffff, side:THREE.DoubleSide, map: texture} ; 
+    //new THREE.TextureLoader().load("index.png")}; //texture };
+  
+    // FROM: https://stackoverflow.com/questions/49900677/mapping-a-stereographic-projection-to-the-inside-of-a-sphere-in-threejs/
+    init();
+    //render(); // remove when using next line for animation loop (requestAnimationFrame)
+    animate();
+
+    function init() {
+      scene = new THREE.Scene();
+
+      renderer = new THREE.WebGLRenderer();
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth * 0.3, window.innerWidth * 0.3);
+
+      var container = document.querySelector("body");
+      container.appendChild(renderer.domElement);
+
+      camera = new THREE.PerspectiveCamera(
+        60,
+        1,
+        0.001,
+        1
+      );
+      // Default to minDistance. See below for explanation
+      camera.position.z = 0.0001;
+
+      // controls
+      controls = new OrbitControls(camera, renderer.domElement);
+      // controls.minPolarAngle = Math.PI * 0.6;
+      // controls.maxPolarAngle = Math.PI * 2;
+      // controls.minAzimuthAngle  = -Math.PI * 1.5;
+      // controls.maxAzimuthAngle = Math.PI * 1.5;
+
+
+      // Stay at the center of the circle
+      // Weird quirk I don't know how to work around yet:
+      // If you're actually IN the center (distance = 0) then
+      // the camera stops rotating. Hence the low near-zero value
+      controls.minDistance = 0.0001;
+      controls.maxDistance = 0.0001;
+
+      // world
+
+      var material = new THREE.MeshBasicMaterial(parameters);
+
+      var mesh = new THREE.Mesh(
+        // Less than 50 segments seems to distort the image pretty badly
+        // "Ideal" would be one segment per pixel, but that's just not practical
+        // Anything over 300 leads to performance issues
+        // Neat CodeSandbox.io feature: when you go over 70
+        // it starts throwing "potential infinite loop" errors
+        // because there are more than 10,001 total segments
+        new THREE.SphereGeometry(0.5, 70, 70),
+        material
+      );
+
+      var geo = mesh.geometry;
+
+      var vFov = 270;
+
+      function updateUVs() {
+        var maxY = Math.cos(Math.PI * (360 - vFov) / 180 / 2);
+        var faceVertexUvs = geo.faceVertexUvs[0];
+        // The sphere consists of many FACES
+        for (var i = 0; i < faceVertexUvs.length; i++) {
+          // For each face...
+          var uvs = faceVertexUvs[i];
+          var face = geo.faces[i];
+          // A face is a triangle (three vertices)
+          for (var j = 0; j < 3; j++) {
+            // For each vertex...
+            // x, y, and z refer to the point on the sphere in 3d space where this vertex resides
+            var x = face.vertexNormals[j].x;
+            var y = face.vertexNormals[j].y;
+            var z = face.vertexNormals[j].z;
+
+            // Because our stereograph goes from 0 to 1 but our vertical field of view cuts off our Y early
+            var scaledY = (((y + 1) / (maxY + 1)) * 2) - 1;
+
+            // uvs[j].x, uvs[j].y refer to a point on the 2d texture
+            if (y < maxY) {
+              var radius = Math.acos(1 - ((scaledY / 2) + 0.5)) / Math.PI;
+              var angle = Math.atan2(x, z);
+
+              uvs[j].x = (radius * Math.cos(angle)) + 0.5;
+              uvs[j].y = (radius * Math.sin(angle)) + 0.5;
+            } else {
+              uvs[j].x = 0;
+              uvs[j].y = 0;
+            }
+          }
+        }
+        // For whatever reason my UV mapping turned everything upside down
+        // Rather than fix my math, I just replaced "minY" with "maxY" and
+        // rotated the sphere 180 degrees
+        geo.rotateZ(Math.PI);
+        geo.rotateY(Math.PI * 1.5);
+        geo.rotateX(0.25);
+        geo.uvsNeedUpdate = true;
+      }
+      updateUVs();
+
+      scene.add(mesh);
+
+      // Don't need lights for MeshBasicMaterial
+
+      window.addEventListener("resize", onWindowResize, false);
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+
+      render();
+    }
+
+    function render() {
+      renderer.render(scene, camera);
+    }
+  </script>
+</body>
