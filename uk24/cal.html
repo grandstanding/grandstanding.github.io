@@ -1,0 +1,32 @@
+<html>
+  <head>
+  	<link rel='stylesheet' href='../style.css'>
+      <style>
+        .label {
+          display: inline-block;
+          width: 40px;
+        }
+        .year {
+          display: flex;
+        }
+        .day {
+          display: inline-block;
+          border: 0.5px solid rgba(0, 0, 0, 0.05);
+          height: 1.5em;
+          flex: 1 1 0px;
+          font-size: 0.9em;
+          overflow: hidden;
+        }
+        </style>
+  </head>
+  <body>
+    <div class="backdrop"></div> 
+    <div class="project">
+        <a href="./">Back</a>
+        <h4>UK General Election Calendar</h4>
+        <div class="legend"></div>
+        <div class="chart"></div>
+    </div>
+	<script defer src='./cal.js' type="module"></script>
+  </body>
+</html>

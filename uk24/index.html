@@ -1,125 +1,13 @@
 <html>
   <head>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
-     
-      :root {
-        font-family: 'Lexend Deca', sans-serif;
-        line-height: 1.5;
-        font-weight: 400;
-      
-        color-scheme: light dark;
-        color: rgba(255, 255, 255, 1);
-        background-color: #242424;
-      
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
-      
-        --primary: #aaf0d1;
-        --secondary: #f8f6f0;
-        --text: rgba(100, 87, 166, 1);
-      	--text-secondary: rgba(125, 122, 188, 1);
-      
-        overflow: hidden;
-      }
-           
-      a {
-        font-weight: 500;
-        color: var(--text);
-        text-decoration: inherit;
-      }
-           
-      a:hover {
-        color: var(--text-secondary);
-      }
-           
-      body {
-        margin: 0;
-        display: flex;
-        place-items: center;
-        min-width: 320px;
-        min-height: 100vh;
-        background: var(--secondary);
-        color: white;
-      }
-           
-      @keyframes move {
-        from {
-          transform: translateX(-50%);
-        } 
-        to {
-          transform: translateX(0%);
-        }
-      }
-           
-      .backdrop {
-        width: 400vw;
-        height: 400vh;
-        font-size: 100vh;
-        pointer-events: none;
-        position: absolute;
-        bottom: 0;
-        text-align: right;
-        letter-spacing: -18vh;
-        opacity: 0.4;
-      
-        background: repeating-linear-gradient(
-          -45deg,
-          rgb(158, 230, 198),
-          rgb(158, 230, 198) 80px,
-          var(--primary) 80px,
-          var(--primary) 160px
-        );
-        animation: move 240s linear infinite;
-        animation-fill-mode: forwards;
-      }
-           
-      .text {
-        background-color: white;
-        color: black;
-        width: 100vw;
-        font-size: 100vh;
-        pointer-events: none;
-        position: absolute;
-        bottom: 0;
-        text-align: right;
-        letter-spacing: -18vh;
-        mix-blend-mode: color-dodge;  /* This makes the cutout text possible */
-      }
-           
-      .projects {
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: rgba(100, 87, 166, 1)
-      }
-           
-      .text-2 {
-        background-color: var(--secondary);
-        color: white;
-        width: 100vw;
-        font-size: 100vh;
-        pointer-events: none;
-        position: absolute;
-        bottom: 0;
-        text-align: right;
-        letter-spacing: -18vh;
-        mix-blend-mode: multiply;  /* This makes the cutout text possible */
-      }
-           
-      ul {
-        list-style: none;
-      }
-    </style>
+  	<link rel='stylesheet' href='../style.css'>
   </head>
   <body>
     <div class="backdrop"></div> 
     <div class="projects">
     <ul>
       <li>🚧</li>
+      <li><a href="./cal.html">Calendar</a></li>
     </ul>
     </div>
   </body>
