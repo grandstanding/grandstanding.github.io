@@ -21,12 +21,13 @@ var pe=Object.defineProperty;var fe=(i,t,e)=>t in i?pe(i,t,{enumerable:!0,config
             <h1>GE24</h1>
             ${this.subtitle}
             <label>Paintbrush color: <select @change=${this.updateBrushParty}>${this.colorLabels.map((e,o)=>B`<option ?selected=${e===this.brushParty} value=${e}>${e}</option>`)}</select></label>
-            
+            <button @click=${this.resetMap}>Clear map</button>
             <p>Click a single seat to cycle through colours, or set the colour dropdown above and drag to paint the map.</p>  
             
             <p>Source map: <a href="https://automaticknowledge.org/wpc-hex/">https://automaticknowledge.org/wpc-hex/</a></p>
         </header>
         <svg
+        style="width: 100vw; height: 1000px"
         viewBox="0, -8000000, 60000, 1700000"
         >
         ${this.geojsonData.features.map(e=>{var o,r;return Ve`<g><path
@@ -48,7 +49,7 @@ var pe=Object.defineProperty;var fe=(i,t,e)=>t in i?pe(i,t,{enumerable:!0,config
             .storedValues=${this.storedValues}
         >
         </seat-table>
-    `}doClick(e){const o=e.target.getAttribute("data-id"),r=JSON.parse(window.localStorage.getItem("gsg-ge24-values"))||{};r[o]=r[o]+1||1,r[o]>7&&(r[o]=0),this.brushParty=this.colorLabels[r[o]],window.localStorage.setItem("gsg-ge24-values",JSON.stringify(r)),this.storedValues=r,this.requestUpdate()}paintDown(e){this.isPainting=!0,this.startSeat=e.target.getAttribute("data-id")}paintDrag(e){const o=e.target.getAttribute("data-id");if(this.isPainting&&this.startSeat!==o){const r=this.storedValues;r[o]=this.colorLabels.indexOf(this.brushParty||"None")||0,this.storedValues=r,this.requestUpdate()}}paintUp(e){const o=e.target.getAttribute("data-id");this.startSeat!==o?(window.localStorage.setItem("gsg-ge24-values",JSON.stringify(this.storedValues)),this.startSeat=null):this.doClick(e),this.isPainting=!1}updateBrushParty(e){this.brushParty=e.target.value}static get styles(){return ie`
+    `}doClick(e){const o=e.target.getAttribute("data-id"),r=JSON.parse(window.localStorage.getItem("gsg-ge24-values"))||{};r[o]=r[o]+1||1,r[o]>7&&(r[o]=0),this.brushParty=this.colorLabels[r[o]],window.localStorage.setItem("gsg-ge24-values",JSON.stringify(r)),this.storedValues=r,this.requestUpdate()}paintDown(e){this.isPainting=!0,this.startSeat=e.target.getAttribute("data-id")}paintDrag(e){const o=e.target.getAttribute("data-id");if(this.isPainting&&this.startSeat!==o){const r=this.storedValues;r[o]=this.colorLabels.indexOf(this.brushParty||"None")||0,this.storedValues=r,this.requestUpdate()}}paintUp(e){const o=e.target.getAttribute("data-id");this.startSeat!==o?(window.localStorage.setItem("gsg-ge24-values",JSON.stringify(this.storedValues)),this.startSeat=null):this.doClick(e),this.isPainting=!1}updateBrushParty(e){this.brushParty=e.target.value}resetMap(){window.localStorage.setItem("gsg-ge24-values",JSON.stringify({})),this.storedValues={},this.requestUpdate()}static get styles(){return ie`
         :host {
             display: block;
             width: 100%;
@@ -61,18 +62,10 @@ var pe=Object.defineProperty;var fe=(i,t,e)=>t in i?pe(i,t,{enumerable:!0,config
             width: 30vw;
         }
 
-        svg {
-          width: 100vw; height: 1000px;
-        }
-
         @media (max-width: 600px) {
             header {
             position: relative;
             width: 90%;
-            }
-
-            svg {
-              height: 600px;
             }
         }
 
