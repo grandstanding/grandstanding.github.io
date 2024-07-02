@@ -29,7 +29,7 @@ var Pe=Object.defineProperty;var Me=(r,t,e)=>t in r?Pe(r,t,{enumerable:!0,config
       <h4>${this.selectedData.label}</h4>
       <div>${this.modelDates.find(e=>e.model===this.selectedData.id).dates.map(e=>$`<button class="${e===this.selectedData.date?"selected":""}" @click=${()=>this.updateSelectedModelDate(e)}>${e}</button>`)}</div>
       Data from <a href="https://x.com/inglesp">@inglesp</a>: <a href="https://inglesp.github.io">https://inglesp.github.io</a>
-    `}render(){return this.seats=this.seatMapped.filter(e=>{var o,i;return this.seatFilter.length>0?((o=e.seat)==null?void 0:o.toLowerCase().includes(this.seatFilter.toLowerCase()))||((i=e.code)==null?void 0:i.toLowerCase().includes(this.seatFilter.toLowerCase())):!0}),this.subtitle=this.view==="color"?$`<h5><a href="/?v=default">Almanac</a> | <strong><a href="/?v=color">Colourbook</a></strong> version</h5>`:$`<h5><strong><a href="/?v=default">Almanac</a> </strong> | <a href="/?v=color">Colourbook</a> version</h5>`,$`
+    `}render(){return this.seats=this.seatMapped.filter(e=>{var o,i;return this.seatFilter.length>0?((o=e.seat)==null?void 0:o.toLowerCase().includes(this.seatFilter.toLowerCase()))||((i=e.code)==null?void 0:i.toLowerCase().includes(this.seatFilter.toLowerCase())):!0}),this.subtitle=this.view==="color"?$`<h5><a href="./?v=default">Almanac</a> | <strong><a href="./?v=color">Colourbook</a></strong> version</h5>`:$`<h5><strong><a href="./?v=default">Almanac</a> </strong> | <a href="./?v=color">Colourbook</a> version</h5>`,$`
         <header>
             <h1>GE24</h1>
             ${this.subtitle}
