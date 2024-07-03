@@ -87,7 +87,10 @@ var Pe=Object.defineProperty;var Me=(r,t,e)=>t in r?Pe(r,t,{enumerable:!0,config
 
         text {
             font-family: sans-serif;
-            pointer-events: none
+            pointer-events: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         path {
